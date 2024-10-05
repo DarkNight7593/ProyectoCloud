@@ -1,16 +1,20 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, FutureDatetime, condate
 from typing import Optional
-from datetime import date
+from datetime import datetime, date
 
 class SeguroModel(BaseModel):
     tipo_seguro: str
-    vencimiento: date
+    vencimiento: FutureDatetime
+
+class SeguroUpdate(BaseModel):
+    tipo_seguro: str = None
+    vencimiento: FutureDatetime = None
 
 class PacienteModel(BaseModel):
     dni: str = Field(..., alias="_id")
     nombres: str
     apellidos: str
-    fecha_nacimiento: date
+    fecha_nacimiento: condate(le=date.today())
     seguro: Optional[SeguroModel] = None
 
     class Config:
@@ -19,8 +23,9 @@ class PacienteModel(BaseModel):
 class PacienteUpdate(BaseModel):
     nombres: Optional[str] = None
     apellidos: Optional[str] = None
-    fecha_nacimiento: Optional[date] = None
-    seguro: Optional[SeguroModel] = None
+    fecha_nacimiento: Optional[datetime] = None
+    seguro: Optional[SeguroUpdate] = None
+
 
 def response_model(data, message):
     return {

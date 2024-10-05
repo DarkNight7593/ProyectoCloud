@@ -1,6 +1,5 @@
 package com.example.demo.Cita.domain;
 
-import com.example.demo.Diagnostico.domain.Diagnostico;
 import com.example.demo.HistoriaClinica.domain.HistoriaClinica;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -22,14 +21,11 @@ public class Cita {
     private Date fecha;
     private Time hora;
     private String especialidad;
+    private String dniDoctor;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "dni_paciente")
     private HistoriaClinica historiaClinica;
-
-    @OneToMany(mappedBy = "cita")
-    private List<Diagnostico> diagnosticos;
-
     // Getters y Setters
 }
