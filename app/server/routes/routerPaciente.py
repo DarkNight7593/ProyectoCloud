@@ -24,12 +24,11 @@ async def create_paciente(paciente_data: PacienteModel = Body(...)):
     return response_model(new_paciente, "Paciente añadido.")
 
 @router.get("/{id}", response_description="Paciente")
-async def get_paciente_id(paciente_id: str):
-    paciente = await retrieve_paciente_by_id(paciente_id)
+async def get_paciente_id(id: str):
+    paciente = await retrieve_paciente_by_id(id)
     if paciente:
         return response_model(paciente, "Paciente encontrado.")
     return error_response_model("Un error ha ocurrido.", 404, "El paciente no existe.")
-
 @router.get("/", response_description="Pacientes")
 async def get_all_pacientes():
     pacientes = await retrieve_pacientes()
