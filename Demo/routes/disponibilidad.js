@@ -5,10 +5,18 @@ const { Pool } = require('pg');
 // Configuración de la conexión a PostgreSQL
 const pool = new Pool({
     user: 'postgres',
-    host: '107.22.167.68',
+    host: 'localhost',
     database: 'hospital',
-    password: 'utec',
-    port: 8007, // El puerto por defecto de PostgreSQL
+    password: 'postgres',
+    port: 5432, // El puerto por defecto de PostgreSQL
+});
+
+pool.connect((err, client, release) => {
+    if (err) {
+        return console.error('Error al conectar a la base de datos:', err.stack);
+    }
+    console.log('Conexión exitosa con la base de datos PostgreSQL');
+    release();
 });
 
 // Obtener la disponibilidad de un doctor específico
@@ -26,12 +34,13 @@ router.get('/:dni', async (req, res) => {
 });
 
 // Agregar disponibilidad para un doctor
-router.post('/', async (req, res) => {
-    const { dia, hora, dni_doctor } = req.body;
+router.post('/:dni', async (req, res) => {
+    const { dni } = req.params;  // Capturamos el dni del doctor desde los parámetros de la URL
+    const { dia, hora } = req.body;  // El día y la hora vienen en el cuerpo de la solicitud
     try {
         await pool.query(
             'INSERT INTO Disponibilidad (dia, hora, dni_doctor) VALUES ($1, $2, $3)',
-            [dia, hora, dni_doctor]
+            [dia, hora, dni]
         );
         res.send('Disponibilidad agregada con éxito');
     } catch (err) {
