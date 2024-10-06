@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de199939-f55b-4e52-bf88-b561a6459182" name="Changes" comment="trabajo">
+      <change beforePath="$PROJECT_DIR$/../Demo/routes/disponibilidad.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Demo/routes/disponibilidad.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Demo/routes/doctors.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Demo/routes/doctors.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +57,7 @@
       <updated>1728148766746</updated>
       <workItem from="1728148770298" duration="13361000" />
       <workItem from="1728233437033" duration="98000" />
-      <workItem from="1728233598267" duration="10656000" />
+      <workItem from="1728233598267" duration="12216000" />
     </task>
     <task id="LOCAL-00001" summary="trabajo">
       <option name="closed" value="true" />
