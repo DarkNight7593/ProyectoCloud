@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HistoriaClinicaRepository extends JpaRepository<HistoriaClinica, String> {
-    // Aquí puedes agregar métodos personalizados si es necesario
+
 }
 

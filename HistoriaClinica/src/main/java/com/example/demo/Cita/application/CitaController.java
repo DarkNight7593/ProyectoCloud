@@ -28,9 +28,9 @@ public class CitaController {
     }
 
     // Crear una nueva cita
-    @PostMapping
-    public Cita createCita(@RequestBody Cita cita) {
-        return citaService.saveCita(cita);
+    @PostMapping("/{dniPaciente}")
+    public Cita createCita(@RequestBody Cita cita, @PathVariable String dniPaciente) {
+        return citaService.saveCita(cita, dniPaciente);
     }
 
     // Eliminar una cita

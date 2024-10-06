@@ -22,7 +22,7 @@ router.post('/agendar', async (req, res) => {
             if (error.response && error.response.status === 404) {
                 // Si el paciente no existe, crearlo con o sin seguro
                 const newPaciente = {
-                    dni: dniPaciente,
+                    _id: dniPaciente,
                     nombres,
                     apellidos,
                     fecha_nacimiento: fechaNacimiento,
@@ -37,12 +37,22 @@ router.post('/agendar', async (req, res) => {
         }
 
         // 2. Verificar que el doctor existe
-        const doctorResponse = await axios.get(`${DOCTOR_SERVICE_URL}/${dniDoctor}`);
-        if (!doctorResponse.data) {
-            console.error(`Doctor con DNI ${dniDoctor} no encontrado.`);
-            return res.status(404).send('Doctor no encontrado');
+        try {
+            const doctorResponse = await axios.get(`${DOCTOR_SERVICE_URL}/${dniDoctor}`);
+
+            if (doctorResponse?.data) {
+                console.log(`Doctor con DNI ${dniDoctor} encontrado.`);
+            } else {
+                return res.status(404).send('Doctor no encontrado');
+            }
+        } catch (error) {
+            const statusCode = error.response?.status || 500;
+            const errorMessage = statusCode === 404 ? 'Doctor no encontrado' : 'Error al verificar el doctor';
+            console.error(errorMessage, error.message);
+            return res.status(statusCode).send(errorMessage);
         }
-        console.log(`Doctor con DNI ${dniDoctor} encontrado.`);
+
+
 
         // 3. Verificar la disponibilidad del doctor
         const disponibilidadResponse = await axios.get(`${DISPONIBILIDAD_SERVICE_URL}/${dniDoctor}`);
@@ -62,7 +72,7 @@ router.post('/agendar', async (req, res) => {
             hora
         };
 
-        const citaResponse = await axios.post(CITA_SERVICE_URL, citaData);
+        const citaResponse = await axios.post(`${CITA_SERVICE_URL}/${dniPaciente}`, citaData);
         console.log(`Cita creada con éxito:`, citaResponse.data);
 
         res.status(201).send('Cita agendada con éxito');

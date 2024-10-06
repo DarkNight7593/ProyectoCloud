@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, HTTPException
 from fastapi.encoders import jsonable_encoder
 
 from ..database import (
@@ -28,7 +28,8 @@ async def get_paciente_id(id: str):
     paciente = await retrieve_paciente_by_id(id)
     if paciente:
         return response_model(paciente, "Paciente encontrado.")
-    return error_response_model("Un error ha ocurrido.", 404, "El paciente no existe.")
+    raise HTTPException(status_code=404, detail="El paciente no existe.")
+
 @router.get("/", response_description="Pacientes")
 async def get_all_pacientes():
     pacientes = await retrieve_pacientes()
@@ -38,10 +39,10 @@ async def get_all_pacientes():
 
 
 
-#TODO: FIX ADDING SEGURO ON ITS OWN
 @router.put("/{id}", response_description="Paciente")
 async def put_paciente(id:str, req: PacienteUpdate = Body(...)):
     req = {k: v for k, v in req.model_dump().items() if v is not None}
+    print(f"Datos procesados para actualizar: {req}")  # Para depuración
     updated_paciente = await modify_paciente(id, req)
     if updated_paciente:
         return response_model(updated_paciente, "Paciente modificado.")

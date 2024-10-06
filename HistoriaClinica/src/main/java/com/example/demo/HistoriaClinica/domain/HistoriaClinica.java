@@ -20,7 +20,7 @@ public class HistoriaClinica {
 
     // Relación con Citas
     @JsonIgnore
-    @OneToMany(mappedBy = "historiaClinica")
+    @OneToMany(mappedBy = "historiaClinica", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cita> citas;
 
 }

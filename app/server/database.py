@@ -92,8 +92,25 @@ async def modify_paciente(id: str, data: dict):
 
 # DELETE
 async def remove_paciente(id: str):
-    student = await collection.find_one({"_id": id})
-    if student:
-        await collection.delete_one({"_id": id})
-        return True
-    return False
+    try:
+        # Buscar el paciente en MongoDB
+        paciente = await collection.find_one({"_id": id})
+        if paciente:
+            # Eliminar la historia clínica en la API de Spring Boot
+            async with httpx.AsyncClient() as client:
+                response = await client.delete(f"http://localhost:8080/historias-clinicas/{id}")
+
+                if response.status_code not in [200, 204]:  # Acepta 200 OK o 204 No Content
+                    logging.error(
+                        f"Error al eliminar la historia clínica, código de estado: {response.status_code}, detalles: {response.text}")
+                    raise HTTPException(status_code=500, detail="Error al eliminar la historia clínica en Spring Boot")
+
+                logging.info(f"Historia clínica eliminada con éxito para el paciente con DNI: {id}")
+
+            # Eliminar el paciente de MongoDB
+            await collection.delete_one({"_id": id})
+            return True
+        return False
+    except Exception as e:
+        logging.error(f"Error eliminando paciente o historia clínica: {e}")
+        raise HTTPException(status_code=500, detail=f"Error eliminando paciente o historia clínica: {e}")

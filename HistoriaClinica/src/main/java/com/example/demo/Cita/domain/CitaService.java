@@ -2,6 +2,9 @@ package com.example.demo.Cita.domain;
 
 import com.example.demo.Cita.repository.CitaRepository;
 import java.util.Map;
+
+import com.example.demo.HistoriaClinica.domain.HistoriaClinica;
+import com.example.demo.HistoriaClinica.repository.HistoriaClinicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,8 @@ public class CitaService {
 
     @Autowired
     CitaRepository citaRepository;
+    @Autowired
+    HistoriaClinicaRepository historiaClinicaRepository;
 
     @Autowired
     RestTemplate restTemplate;
@@ -30,10 +35,10 @@ public class CitaService {
     }
 
     // URL de la otra API
-    private static final String DOCTOR_API_URL = "http://localhost:3000/doctors"; // Cambia esto si la otra API está en otro servidor
+    private static final String DOCTOR_API_URL = "http://localhost:3000/doctors";
 
     // Guardar una nueva cita y actualizar el total de citas del doctor
-    public Cita saveCita(Cita cita) {
+    public Cita saveCita(Cita cita,String dniPaciente) {
         String doctorUrl = DOCTOR_API_URL + "/" + cita.getDniDoctor();
         try {
             // Realizar una solicitud GET para obtener la información del doctor
@@ -51,11 +56,20 @@ public class CitaService {
             throw new RuntimeException("Error al obtener la especialidad del doctor");
         }
 
+        // Obtener la historia clínica directamente de la base de datos
+        Optional<HistoriaClinica> historiaClinica = historiaClinicaRepository.findById(dniPaciente);
+
+        if (historiaClinica.isPresent()) {
+            cita.setHistoriaClinica(historiaClinica.get());  // Asociar la historia clínica con la cita
+        } else {
+            throw new RuntimeException("Historia clínica no encontrada para el paciente con DNI: " + dniPaciente);
+        }
+
         // Guardar la cita en la base de datos
         Cita savedCita = citaRepository.save(cita);
 
         // Actualizar el total de citas del doctor
-        String updateUrl = DOCTOR_API_URL + "/" + cita.getDniDoctor() + "/citas";
+        String updateUrl = DOCTOR_API_URL + "/" + cita.getDniDoctor() + "/citas/1";
         try {
             restTemplate.put(updateUrl, null);
             System.out.println("Total de citas actualizado con éxito");
@@ -66,9 +80,26 @@ public class CitaService {
         return savedCita;
     }
 
-
-    // Eliminar una cita
+    // Eliminar una cita y reducir el total de citas del doctor
     public void deleteCita(Long id) {
-        citaRepository.deleteById(id);
+        Optional<Cita> cita = citaRepository.findById(id);
+
+        if (cita.isPresent()) {
+            String updateUrl = DOCTOR_API_URL + "/" + cita.get().getDniDoctor() + "/citas/-1"; // Restar 1 al total de citas
+
+            try {
+                // Hacer la solicitud para reducir el total de citas
+                restTemplate.put(updateUrl, null);
+                System.out.println("Total de citas actualizado con éxito");
+            } catch (Exception e) {
+                System.out.println("Error al actualizar el total de citas: " + e.getMessage());
+            }
+
+            // Finalmente, eliminar la cita
+            citaRepository.deleteById(id);
+            System.out.println("Cita eliminada con éxito");
+        } else {
+            System.out.println("Cita no encontrada");
+        }
     }
 }

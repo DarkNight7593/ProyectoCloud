@@ -46,20 +46,25 @@ router.get('/', async (req, res) => {
 
 
    // Actualizar el contador de total citas de un doctor
-   router.put('/:dni/citas', async (req, res) => {
-       const { dni } = req.params;
+router.put('/:dni/citas/:estado', async (req, res) => {
+    const { dni } = req.params;
+    let estado = parseInt(req.params.estado, 10); // Convertir `estado` a número entero
 
-       try {
-           // Usamos la consulta SQL para actualizar el total de citas
-           await pool.query(
-               'UPDATE Doctor SET totalcitas = totalcitas + 1 WHERE dni = $1',
-               [dni]
-           );
-           res.send(`Total citas actualizadas con éxito para el doctor con DNI ${dni}`);
-       } catch (err) {
-           res.status(500).send('Error al actualizar el contador de citas');
-       }
-   });
+    if (isNaN(estado)) {
+        return res.status(400).send('El parámetro estado debe ser un número válido');
+    }
+
+    try {
+        // Usamos la consulta SQL para actualizar el total de citas
+        await pool.query(
+            'UPDATE Doctor SET totalcitas = totalcitas + $2 WHERE dni = $1',
+            [dni, estado]
+        );
+        res.send(`Total citas actualizadas con éxito para el doctor con DNI ${dni}`);
+    } catch (err) {
+        res.status(500).send('Error al actualizar el contador de citas');
+    }
+});
 // Obtener un doctor por su DNI
 router.get('/:dni', async (req, res) => {
     const { dni } = req.params;
@@ -74,6 +79,26 @@ router.get('/:dni', async (req, res) => {
     } catch (err) {
         console.error('Error al obtener el doctor:', err.stack);
         res.status(500).send('Error al obtener el doctor');
+    }
+});
+
+// Eliminar un doctor por su DNI
+router.delete('/:dni', async (req, res) => {
+    const { dni } = req.params;
+    try {
+        // Primero, verificamos si el doctor existe
+        const result = await pool.query('SELECT * FROM Doctor WHERE dni = $1', [dni]);
+
+        if (result.rows.length > 0) {
+            await pool.query('DELETE FROM Disponibilidad WHERE dni_doctor = $1', [dni]);
+            await pool.query('DELETE FROM Doctor WHERE dni = $1', [dni]);
+            res.send('Doctor con DNI ${dni} eliminado con éxito con sus disponibilidades');
+        } else {
+            res.status(404).send('Doctor no encontrado');
+        }
+    } catch (err) {
+        console.error('Error al eliminar el doctor:', err.stack);
+        res.status(500).send('Error al eliminar el doctor');
     }
 });
 
