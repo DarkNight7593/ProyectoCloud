@@ -1,17 +1,21 @@
  services:
-   historiamedica123:
+    agendarcita:
+     build: ./AgendarCita
+     ports:
+       - 8083:4000
+   historiamedica:
      build: ./HistoriaClinica
      ports:
        - 8080:8080
      env_file:
        - ./.env
-   demo123:
+   doctores:
      build: ./Demo
      ports:
        - 8081:3000
      env_file:
        - ./.env
-   app123:
+   pacientes:
      build: ./app
      ports:
        - 8082:8000
