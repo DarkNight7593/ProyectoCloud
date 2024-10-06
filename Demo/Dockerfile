@@ -13,8 +13,5 @@ RUN npm install
 # Copia el resto de tu código fuente al contenedor
 COPY . .
 
-# Expone el puerto en el que corre tu aplicación (por defecto el 3000 en Express)
-EXPOSE 3000
-
 # Define el comando para correr tu aplicación
 CMD ["npm", "start"]
