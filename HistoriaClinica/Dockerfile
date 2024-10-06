@@ -21,8 +21,5 @@ WORKDIR /app
 # Copiamos el archivo JAR generado desde la etapa de construcción
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponemos el puerto 8080 (puerto por defecto de Spring Boot)
-EXPOSE 8080
-
 # Comando para ejecutar la aplicación
 CMD ["java", "-jar", "app.jar"]
