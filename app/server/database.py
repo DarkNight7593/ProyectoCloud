@@ -12,12 +12,17 @@ def convert_to_peru_timezone(dt: datetime) -> datetime:
 def convert_to_sql_date_format(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%d")
 
-# mongodb://mongo:utec@107.22.167.68:8008/
-MONGO_URI = "mongodb://localhost:27017/"
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
-database = client.hospital
-collection = database.get_collection("Pacientes")
+MONGO_HOST = os.getenv('MONGO_HOST')
+MONGO_PORT = os.getenv('MONGO_PORT')
+MONGO_DB = os.getenv('MONGO_DB')
+MONGO_USER = os.getenv('MONGO_USER')
+MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+MONGO_COLLECTION_PACIENTES = os.getenv('MONGO_COLLECTION_PACIENTES')
 
+MONGO_URI = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/"
+client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
+database = client[MONGO_DB]
+collection = database.get_collection(MONGO_COLLECTION_PACIENTES)
 
 # GET ALL
 async def retrieve_pacientes():
