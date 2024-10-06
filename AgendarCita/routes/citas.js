@@ -4,8 +4,8 @@ const axios = require('axios');
 
 // URLs de los microservicios
 const PACIENTE_SERVICE_URL = 'http://localhost:8082/pacientes';
-const DOCTOR_SERVICE_URL = 'http://localhost:3000/doctors';
-const DISPONIBILIDAD_SERVICE_URL = 'http://localhost:3000/disponibilidad';
+const DOCTOR_SERVICE_URL = 'http://localhost:8081/doctors';
+const DISPONIBILIDAD_SERVICE_URL = 'http://localhost:8081/disponibilidad';
 const CITA_SERVICE_URL = 'http://localhost:8080/citas';
 
 // Ruta para agendar una cita
