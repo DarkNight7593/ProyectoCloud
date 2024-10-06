@@ -83,5 +83,49 @@ router.post('/agendar', async (req, res) => {
     }
 });
 
+// Obtener las citas del paciente con el DNI y los detalles del doctor (sin el contador de citas)
+router.get('/:dniPaciente', async (req, res) => {
+    const { dniPaciente } = req.params;
+
+    try {
+        // 1. Obtener las citas del paciente
+        const citasResponse = await axios.get(`${CITA_SERVICE_URL}/paciente/${dniPaciente}`);
+        const citas = citasResponse.data;
+
+        if (!citas.length) {
+            return res.status(404).send(`No se encontraron citas para el paciente con DNI ${dniPaciente}`);
+        }
+
+        // 2. Para cada cita, obtener los detalles del doctor (sin el contador de citas)
+        const citasConDoctor = await Promise.all(citas.map(async (cita) => {
+            try {
+                const doctorResponse = await axios.get(`${DOCTOR_SERVICE_URL}/${cita.dniDoctor}`);
+                const doctorData = doctorResponse.data;
+
+                // Agregar los datos del doctor (sin el contador de citas)
+                return {
+                    fecha: cita.fecha,
+                    hora: cita.hora,
+                    doctor: {
+                        nombres: doctorData.nombres,
+                        apellidos: doctorData.apellidos,
+                        especialidad: doctorData.especialidad
+                    }
+                };
+            } catch (error) {
+                console.error(`Error al obtener los datos del doctor con DNI ${cita.dniDoctor}:`, error.message);
+                return { ...cita, doctor: 'Error al obtener los datos del doctor' };
+            }
+        }));
+
+        // 3. Devolver las citas con la información del doctor
+        res.json(citasConDoctor);
+
+    } catch (error) {
+        console.error('Error al obtener las citas del paciente:', error.message);
+        res.status(500).send('Error al obtener las citas del paciente');
+    }
+});
+
 module.exports = router;
 

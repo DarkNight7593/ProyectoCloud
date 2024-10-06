@@ -102,4 +102,8 @@ public class CitaService {
             System.out.println("Cita no encontrada");
         }
     }
+
+    public List<Cita> getCitasByDniPaciente(String dniPaciente) {
+        return citaRepository.findByHistoriaClinica_DniPaciente(dniPaciente);
+    }
 }

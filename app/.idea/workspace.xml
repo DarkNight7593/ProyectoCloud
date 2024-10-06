@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de199939-f55b-4e52-bf88-b561a6459182" name="Changes" comment="trabajo">
-      <change beforePath="$PROJECT_DIR$/../HistoriaClinica/target/classes/com/example/demo/Cita/domain/CitaService.class" beforeDir="false" afterPath="$PROJECT_DIR$/../HistoriaClinica/target/classes/com/example/demo/Cita/domain/CitaService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/app.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/routerPaciente.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/routerPaciente.py" afterDir="false" />
-    </list>
+    <list default="true" id="de199939-f55b-4e52-bf88-b561a6459182" name="Changes" comment="trabajo" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,7 +53,7 @@
       <updated>1728148766746</updated>
       <workItem from="1728148770298" duration="13361000" />
       <workItem from="1728233437033" duration="98000" />
-      <workItem from="1728233598267" duration="8386000" />
+      <workItem from="1728233598267" duration="9120000" />
     </task>
     <task id="LOCAL-00001" summary="trabajo">
       <option name="closed" value="true" />

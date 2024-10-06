@@ -38,5 +38,10 @@ public class CitaController {
     public void deleteCita(@PathVariable Long id) {
         citaService.deleteCita(id);
     }
+
+    @GetMapping("/paciente/{dniPaciente}")
+    public List<Cita> getCitasByDniPaciente(@PathVariable String dniPaciente) {
+        return citaService.getCitasByDniPaciente(dniPaciente);
+    }
 }
 
