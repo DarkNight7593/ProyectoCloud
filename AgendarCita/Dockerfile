@@ -1,24 +1,17 @@
-FROM maven:3.8.8-eclipse-temurin-17 AS build
+# Usa una imagen base de Node.js
+FROM node:14
 
-# Establecemos el directorio de trabajo
-WORKDIR /app
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /usr/src/app
 
-# Copiamos el archivo pom.xml y descargamos las dependencias
-COPY pom.xml .
-RUN mvn dependency:go-offline
+# Copia el archivo package.json y package-lock.json al directorio de trabajo
+COPY package*.json ./
 
-# Copiamos el resto del código fuente y construimos la aplicación
-COPY src ./src
-RUN mvn clean package -DskipTests
+# Instala las dependencias
+RUN npm install
 
-# Usamos una imagen base de JDK para ejecutar la aplicación
-FROM openjdk:17-jdk-slim
+# Copia el resto de tu código fuente al contenedor
+COPY . .
 
-# Establecemos el directorio de trabajo en el contenedor
-WORKDIR /app
-
-# Copiamos el archivo JAR generado desde la etapa de construcción
-COPY --from=build /app/target/*.jar app.jar
-
-# Comando para ejecutar la aplicación
-CMD ["java", "-jar", "app.jar"]
+# Define el comando para correr tu aplicación
+CMD ["npm", "start"]
