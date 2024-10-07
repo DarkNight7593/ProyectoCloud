@@ -24,6 +24,8 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
 database = client[MONGO_DB]
 collection = database.get_collection(MONGO_COLLECTION_PACIENTES)
 
+SERVICE_HOST = os.getenv('SERVICE_HOST')
+
 # GET ALL
 async def retrieve_pacientes():
     pacientes = []
@@ -48,7 +50,7 @@ async def insert_paciente(data: dict):
                 "dniPaciente": data["_id"]
             }
 
-            response = await client.post("http://localhost:8080/historias-clinicas", json=historia_clinica_data)
+            response = await client.post(f"http://{SERVICE_HOST}:8080/historias-clinicas", json=historia_clinica_data)
 
             if response.status_code not in [200, 201]:  # Acepta 200 OK o 201 Created
                 logging.error(f"Error al crear historia clínica, código de estado: {response.status_code}, detalles: {response.text}")
@@ -103,7 +105,7 @@ async def remove_paciente(id: str):
         if paciente:
             # Eliminar la historia clínica en la API de Spring Boot
             async with httpx.AsyncClient() as client:
-                response = await client.delete(f"http://localhost:8080/historias-clinicas/{id}")
+                response = await client.delete(f"http://{SERVICE_HOST}:8080/historias-clinicas/{id}")
 
                 if response.status_code not in [200, 204]:  # Acepta 200 OK o 204 No Content
                     logging.error(
