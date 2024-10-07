@@ -41,7 +41,7 @@ async def insert_paciente(data: dict):
         paciente = await collection.insert_one(data)
         new_paciente = await collection.find_one({"_id": paciente.inserted_id})
 
-        # Crear la nueva historia clínica en Spring Boot
+        # Crear la nueva historia clínica 
         async with httpx.AsyncClient() as client:
             current_time = convert_to_peru_timezone(datetime.now())
 
@@ -52,7 +52,7 @@ async def insert_paciente(data: dict):
 
             response = await client.post(f"http://{SERVICE_HOST}:8080/historias-clinicas", json=historia_clinica_data)
 
-            if response.status_code not in [200, 201]:  # Acepta 200 OK o 201 Created
+            if response.status_code not in [200, 201]: 
                 logging.error(f"Error al crear historia clínica, código de estado: {response.status_code}, detalles: {response.text}")
                 raise HTTPException(status_code=500, detail="Error al crear la historia clínica en Spring Boot")
 
@@ -100,10 +100,10 @@ async def modify_paciente(id: str, data: dict):
 # DELETE
 async def remove_paciente(id: str):
     try:
-        # Buscar el paciente en MongoDB
+        # Buscar el paciente
         paciente = await collection.find_one({"_id": id})
         if paciente:
-            # Eliminar la historia clínica en la API de Spring Boot
+            # Eliminar la historia clínica 
             async with httpx.AsyncClient() as client:
                 response = await client.delete(f"http://{SERVICE_HOST}:8080/historias-clinicas/{id}")
 
