@@ -7,5 +7,5 @@ app.include_router(pacientes_router, tags=["Pacientes"], prefix="/pacientes")
 
 @app.get("/", tags=["Root"])
 async def root():
-    return {"message": "I am alive and OK."}
+    return {"message": "Echo test Ok"}
 
