@@ -5,8 +5,7 @@ var logger = require('morgan');
 
 // Importar rutas
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var citasRouter = require('./routes/citas');  // Importamos la nueva ruta de citas
+var citasRouter = require('./routes/citas'); 
 
 var app = express();
 
