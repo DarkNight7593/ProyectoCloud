@@ -6,6 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 
 // Importar las nuevas rutas
+var indexRouter = require('./routes/index');
 var doctorRouter = require('./routes/doctors');
 var disponibilidadRouter = require('./routes/disponibilidad');
 
