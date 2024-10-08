@@ -4,6 +4,8 @@ import pytz
 from datetime import datetime
 import httpx
 from fastapi import HTTPException
+from fastapi.encoders import jsonable_encoder
+
 from server.models.patientModel import PacienteModel, PacienteUpdate, SeguroModel
 
 MONGO_HOST = os.getenv('MONGO_HOST')
@@ -33,8 +35,8 @@ async def retrieve_pacientes():
 async def insert_paciente(data: PacienteModel):
     try:
         # Insertar el paciente en MongoDB
-        paciente_dict = data.dict(by_alias=True)  # Convertir el modelo a dict con alias
-        result = await collection.insert_one(paciente_dict)
+        paciente = jsonable_encoder(data)
+        result = await insert_paciente(paciente)
         new_paciente = await collection.find_one({"_id": result.inserted_id})
 
         # Crear la nueva historia clínica
