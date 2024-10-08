@@ -10,6 +10,35 @@ const DISPONIBILIDAD_SERVICE_URL = `http://${SERVICE_HOST}:8081/disponibilidad`;
 const CITA_SERVICE_URL = `http://${SERVICE_HOST}:8080/citas`;
 
 // Ruta para agendar una cita
+/**
+ * @swagger
+ * /agendar:
+ *   post:
+ *     summary: Agendar una cita
+ *     description: Crea una cita para un paciente y un doctor.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               dniPaciente:
+ *                 type: string
+ *               dniDoctor:
+ *                 type: string
+ *               fecha:
+ *                 type: string
+ *                 format: date
+ *               hora:
+ *                 type: string
+ *                 format: time
+ *     responses:
+ *       201:
+ *         description: Cita creada con éxito
+ *       500:
+ *         description: Error al agendar la cita
+ */
 router.post('/agendar', async (req, res) => {
     const { dniPaciente, nombres, apellidos, fechaNacimiento, dniDoctor, fecha, hora, seguro } = req.body;
 
@@ -84,7 +113,19 @@ router.post('/agendar', async (req, res) => {
     }
 });
 
-// Obtener las citas del paciente con el DNI y los detalles del doctor (sin el contador de citas)
+/**
+ * @swagger
+ * /listar:
+ *   get:
+ *     summary: Listar todas las citas
+ *     description: Retorna una lista de todas las citas agendadas.
+ *     responses:
+ *       200:
+ *         description: Lista de citas obtenida con éxito
+ *       500:
+ *         description: Error al obtener las citas
+ */
+// Obtener las citas del paciente con el DNI y los detalles del doctor
 router.get('/:dniPaciente', async (req, res) => {
     const { dniPaciente } = req.params;
 

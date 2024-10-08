@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 // Importar las nuevas rutas
 var indexRouter = require('./routes/index');
@@ -38,6 +40,29 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const SERVICE_HOST = process.env.SERVICE_HOST || 'localhost';
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API de Agendar Citas',
+      version: '1.0.0',
+      description: 'Documentación de la API de Agendar Citas',
+    },
+    servers: [
+      {
+        url: `http://${SERVICE_HOST}:4000`, // URL del servidor
+      },
+    ],
+  },
+  apis: ['./routes/*.js'], // Ruta donde se definen los endpoints
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+// Configurar Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 module.exports = app;
