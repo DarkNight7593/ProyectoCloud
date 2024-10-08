@@ -30,19 +30,6 @@ app.use('/', indexRouter);
 app.use('/doctors', doctorRouter);
 app.use('/disponibilidad', disponibilidadRouter);
 
-// Manejo de errores 404
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// Manejador de errores
-app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
-});
-
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -64,6 +51,18 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+// Manejo de errores 404
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// Manejador de errores
+app.use(function(err, req, res, next) {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.render('error');
+});
 
 module.exports = app;
 
