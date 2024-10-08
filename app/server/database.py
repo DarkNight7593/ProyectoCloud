@@ -36,7 +36,7 @@ async def insert_paciente(data: PacienteModel):
     try:
         # Insertar el paciente en MongoDB
         paciente = jsonable_encoder(data)
-        result = await insert_paciente(paciente)
+        result = await collection.insert_one(paciente) 
         new_paciente = await collection.find_one({"_id": result.inserted_id})
 
         # Crear la nueva historia clínica
