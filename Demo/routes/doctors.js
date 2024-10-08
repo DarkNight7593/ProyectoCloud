@@ -20,6 +20,35 @@ pool.connect((err, client, release) => {
 });
 
 // Obtener todos los doctores
+/**
+ * @swagger
+ * /doctors:
+ *   get:
+ *     summary: Obtener todos los doctores
+ *     description: Recupera todos los doctores de la base de datos de PostgreSQL.
+ *     responses:
+ *       200:
+ *         description: Lista de doctores obtenida con éxito.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   dni:
+ *                     type: string
+ *                   nombres:
+ *                     type: string
+ *                   apellidos:
+ *                     type: string
+ *                   especialidad:
+ *                     type: string
+ *                   totalcitas:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener los doctores.
+ */
 router.get('/', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM Doctor');
@@ -30,6 +59,34 @@ router.get('/', async (req, res) => {
 });
 
 // Agregar un doctor
+/**
+ * @swagger
+ * /doctors:
+ *   post:
+ *     summary: Agregar un nuevo doctor
+ *     description: Agrega un nuevo doctor a la base de datos de PostgreSQL.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               dni:
+ *                 type: string
+ *               nombres:
+ *                 type: string
+ *               apellidos:
+ *                 type: string
+ *               especialidad:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Doctor agregado con éxito.
+ *       500:
+ *         description: Error al agregar el doctor.
+ */
+
    router.post('/', async (req, res) => {
        const { dni, nombres, apellidos, especialidad } = req.body;
        try {
@@ -46,6 +103,33 @@ router.get('/', async (req, res) => {
 
 
    // Actualizar el contador de total citas de un doctor
+/**
+ * @swagger
+ * /doctors/{dni}/citas/{estado}:
+ *   put:
+ *     summary: Actualizar el total de citas de un doctor
+ *     description: Actualiza el número total de citas de un doctor sumando el estado dado.
+ *     parameters:
+ *       - in: path
+ *         name: dni
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: DNI del doctor.
+ *       - in: path
+ *         name: estado
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Estado de la cita.
+ *     responses:
+ *       200:
+ *         description: Total de citas actualizado con éxito.
+ *       400:
+ *         description: El parámetro estado es inválido.
+ *       500:
+ *         description: Error al actualizar el total de citas.
+ */
 router.put('/:dni/citas/:estado', async (req, res) => {
     const { dni } = req.params;
     let estado = parseInt(req.params.estado, 10); // Convertir `estado` a número entero
@@ -65,7 +149,42 @@ router.put('/:dni/citas/:estado', async (req, res) => {
         res.status(500).send('Error al actualizar el contador de citas');
     }
 });
+
 // Obtener un doctor por su DNI
+/**
+ * @swagger
+ * /doctors/{dni}:
+ *   get:
+ *     summary: Obtener un doctor por DNI
+ *     description: Recupera un doctor específico basado en su DNI.
+ *     parameters:
+ *       - in: path
+ *         name: dni
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: DNI del doctor.
+ *     responses:
+ *       200:
+ *         description: Doctor encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dni:
+ *                   type: string
+ *                 nombres:
+ *                   type: string
+ *                 apellidos:
+ *                   type: string
+ *                 especialidad:
+ *                   type: string
+ *       404:
+ *         description: Doctor no encontrado.
+ *       500:
+ *         description: Error al obtener el doctor.
+ */
 router.get('/:dni', async (req, res) => {
     const { dni } = req.params;
     try {
@@ -83,6 +202,27 @@ router.get('/:dni', async (req, res) => {
 });
 
 // Eliminar un doctor por su DNI
+/**
+ * @swagger
+ * /doctors/{dni}:
+ *   delete:
+ *     summary: Eliminar un doctor por DNI
+ *     description: Elimina un doctor y todas sus disponibilidades basadas en su DNI.
+ *     parameters:
+ *       - in: path
+ *         name: dni
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: DNI del doctor.
+ *     responses:
+ *       200:
+ *         description: Doctor eliminado con éxito.
+ *       404:
+ *         description: Doctor no encontrado.
+ *       500:
+ *         description: Error al eliminar el doctor.
+ */
 router.delete('/:dni', async (req, res) => {
     const { dni } = req.params;
     try {

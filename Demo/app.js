@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 // Importar las nuevas rutas
 var indexRouter = require('./routes/index');
@@ -40,6 +42,27 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API de Doctores y Disponibilidad',
+      version: '1.0.0',
+      description: 'Documentación de la API de Doctores y Disponibilidad',
+    },
+    servers: [
+      {
+        url: `http://${process.env.SERVICE_HOST}:3000`,
+      },
+    ],
+  },
+  apis: ['./routes/*.js'], // Ruta a los archivos con endpoints
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 module.exports = app;

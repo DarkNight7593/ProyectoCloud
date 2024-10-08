@@ -20,6 +20,36 @@ pool.connect((err, client, release) => {
 });
 
 // Obtener la disponibilidad de un doctor específico
+/**
+ * @swagger
+ * /disponibilidad/{dni}:
+ *   get:
+ *     summary: Obtener disponibilidad de un doctor
+ *     description: Recupera la disponibilidad de un doctor basado en su DNI.
+ *     parameters:
+ *       - in: path
+ *         name: dni
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: DNI del doctor.
+ *     responses:
+ *       200:
+ *         description: Disponibilidad obtenida con éxito.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   dia:
+ *                     type: string
+ *                   hora:
+ *                     type: string
+ *       500:
+ *         description: Error al obtener la disponibilidad.
+ */
 router.get('/:dni', async (req, res) => {
     const { dni } = req.params;
     try {
@@ -34,6 +64,36 @@ router.get('/:dni', async (req, res) => {
 });
 
 // Agregar disponibilidad para un doctor
+/**
+ * @swagger
+ * /disponibilidad/{dni}:
+ *   post:
+ *     summary: Agregar disponibilidad para un doctor
+ *     description: Agrega disponibilidad para un doctor en un día y hora específicos.
+ *     parameters:
+ *       - in: path
+ *         name: dni
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: DNI del doctor.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               dia:
+ *                 type: string
+ *               hora:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Disponibilidad agregada con éxito.
+ *       500:
+ *         description: Error al agregar la disponibilidad.
+ */
 router.post('/:dni', async (req, res) => {
     const { dni } = req.params;  // Capturamos el dni del doctor desde los parámetros de la URL
     const { dia, hora } = req.body;  // El día y la hora vienen en el cuerpo de la solicitud
