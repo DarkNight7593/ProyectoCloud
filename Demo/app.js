@@ -57,7 +57,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Ruta a los archivos con endpoints
+  apis: ['./routes/doctors.js', './routes/disponibilidad.js'], // Ruta a los archivos con endpoints
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

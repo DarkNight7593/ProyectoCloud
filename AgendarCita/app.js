@@ -56,7 +56,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Ruta donde se definen los endpoints
+  apis: ['./routes/citas.js'], // Ruta donde se definen los endpoints
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
