@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de199939-f55b-4e52-bf88-b561a6459182" name="Changes" comment="trabajo">
-      <change beforePath="$PROJECT_DIR$/../Demo/routes/doctors.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Demo/routes/doctors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/patientModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/patientModel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +59,8 @@
       <workItem from="1728148770298" duration="13361000" />
       <workItem from="1728233437033" duration="98000" />
       <workItem from="1728233598267" duration="12706000" />
+      <workItem from="1728360462351" duration="351000" />
+      <workItem from="1728361952066" duration="708000" />
     </task>
     <task id="LOCAL-00001" summary="trabajo">
       <option name="closed" value="true" />
@@ -73,7 +78,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728256816766</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="trabajo">
+      <option name="closed" value="true" />
+      <created>1728360798779</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728360798779</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -84,6 +97,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="trabajo" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/app$main.coverage" NAME="main Coverage Results" MODIFIED="1728246612886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/app$main.coverage" NAME="main Coverage Results" MODIFIED="1728360666287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

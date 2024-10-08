@@ -4,18 +4,18 @@ from datetime import datetime, date
 
 class SeguroModel(BaseModel):
     tipo_seguro: str
-    vencimiento: FutureDatetime
+    vencimiento: date
 
 class SeguroUpdate(BaseModel):
     tipo_seguro: str = None
-    vencimiento: FutureDatetime = None
+    vencimiento: date = None
 
 class PacienteModel(BaseModel):
     dni: str = Field(..., alias="_id")
     nombres: str
     apellidos: str
-    fecha_nacimiento: condate(le=date.today())
-    seguro: Optional[SeguroModel] = None
+    fecha_nacimiento: date
+    seguro: SeguroModel
 
     class Config:
         allow_population_by_field_name = True
