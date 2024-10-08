@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 // Rutas
+app.use('/', indexRouter);
 app.use('/doctors', doctorRouter);
 app.use('/disponibilidad', disponibilidadRouter);
 
