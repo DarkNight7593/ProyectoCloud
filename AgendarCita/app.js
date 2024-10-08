@@ -24,7 +24,6 @@ app.use(bodyParser.json());
 
 // Rutas
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/citas', citasRouter);
 
 // Manejo de errores 404
