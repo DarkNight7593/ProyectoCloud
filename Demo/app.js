@@ -53,7 +53,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://${process.env.SERVICE_HOST}:3000`,
+        url: `http://${process.env.SERVICE_HOST}:8081`,
       },
     ],
   },
