@@ -15,7 +15,7 @@ const CITA_SERVICE_URL = `http://${SERVICE_HOST}:8080/citas`;
  * /agendar:
  *   post:
  *     summary: Agendar una cita
- *     description: Crea una cita para un paciente y un doctor.
+ *     description: Crea una cita para un paciente con un doctor en una fecha y hora específicas. Si el paciente no existe, se crea automáticamente.
  *     requestBody:
  *       required: true
  *       content:
@@ -25,19 +25,67 @@ const CITA_SERVICE_URL = `http://${SERVICE_HOST}:8080/citas`;
  *             properties:
  *               dniPaciente:
  *                 type: string
+ *                 description: DNI del paciente
+ *               nombres:
+ *                 type: string
+ *                 description: Nombres del paciente (si se va a crear un nuevo paciente)
+ *               apellidos:
+ *                 type: string
+ *                 description: Apellidos del paciente (si se va a crear un nuevo paciente)
+ *               fechaNacimiento:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de nacimiento del paciente (si se va a crear un nuevo paciente)
  *               dniDoctor:
  *                 type: string
+ *                 description: DNI del doctor
  *               fecha:
  *                 type: string
  *                 format: date
+ *                 description: Fecha de la cita
  *               hora:
  *                 type: string
  *                 format: time
+ *                 description: Hora de la cita
+ *               seguro:
+ *                 type: object
+ *                 properties:
+ *                   tipo_seguro:
+ *                     type: string
+ *                     description: Tipo de seguro del paciente (opcional)
+ *                   vencimiento:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de vencimiento del seguro (opcional)
  *     responses:
  *       201:
  *         description: Cita creada con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "Cita agendada con éxito"
+ *       404:
+ *         description: El doctor no fue encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "Doctor no encontrado"
+ *       400:
+ *         description: El doctor no está disponible en la fecha y hora seleccionadas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "El doctor no está disponible en la fecha y hora solicitadas"
  *       500:
  *         description: Error al agendar la cita
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "Error al agendar la cita"
  */
 router.post('/agendar', async (req, res) => {
     const { dniPaciente, nombres, apellidos, fechaNacimiento, dniDoctor, fecha, hora, seguro } = req.body;
@@ -118,12 +166,62 @@ router.post('/agendar', async (req, res) => {
  * /listar:
  *   get:
  *     summary: Listar todas las citas
- *     description: Retorna una lista de todas las citas agendadas.
+ *     tags: [Citas]
+ *     description: Retorna una lista de todas las citas agendadas para un paciente, incluyendo la información del doctor.
+ *     parameters:
+ *       - in: path
+ *         name: dniPaciente
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: DNI del paciente
  *     responses:
  *       200:
  *         description: Lista de citas obtenida con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   fecha:
+ *                     type: string
+ *                     description: Fecha de la cita
+ *                     example: "2023-11-01"
+ *                   hora:
+ *                     type: string
+ *                     description: Hora de la cita
+ *                     example: "10:00"
+ *                   doctor:
+ *                     type: object
+ *                     properties:
+ *                       nombres:
+ *                         type: string
+ *                         description: Nombres del doctor
+ *                         example: "Luis"
+ *                       apellidos:
+ *                         type: string
+ *                         description: Apellidos del doctor
+ *                         example: "Pérez"
+ *                       especialidad:
+ *                         type: string
+ *                         description: Especialidad del doctor
+ *                         example: "Cardiología"
+ *       404:
+ *         description: No se encontraron citas para el paciente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "No se encontraron citas para el paciente con DNI {dniPaciente}"
  *       500:
  *         description: Error al obtener las citas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "Error al obtener las citas del paciente"
  */
 // Obtener las citas del paciente con el DNI y los detalles del doctor
 router.get('/:dniPaciente', async (req, res) => {
